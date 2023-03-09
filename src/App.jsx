@@ -2,8 +2,21 @@ import { useEffect, useState } from 'react'
 
 function App () {
   const [enabled, setEnabled] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
   useEffect(() => {
-    console.log('Hola')
+    const handleMove = (event) => {
+      const { clientX, clientY } = event
+      console.log('handleMove', { clientX, clientY })
+      setPosition({ x: clientX, y: clientY })
+    }
+    if (enabled) {
+      window.addEventListener('pointermove', handleMove)
+    }
+
+    // Se ejecuta cuando cambia la dependencia o se eliminar el componente
+    return () => {
+      window.removeEventListener('pointermove', handleMove)
+    }
   }, [enabled])
 
   const activatePointer = () => {
@@ -22,7 +35,7 @@ function App () {
         top: -20,
         width: 40,
         height: 40,
-        transform: 'translate(0px,0px)'
+        transform: `translate(${position.x}px, ${position.y}px)`
       }}
       />
       <h3>Proyecto 3</h3>
