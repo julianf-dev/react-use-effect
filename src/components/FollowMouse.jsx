@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 export const FollowMouse = () => {
   const [enabled, setEnabled] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+
+  // Pointer Mouse
   useEffect(() => {
     console.log('effect', { enabled })
     const handleMove = (event) => {
@@ -22,6 +24,19 @@ export const FollowMouse = () => {
       window.removeEventListener('pointermove', handleMove)
     }
   }, [enabled])
+
+  // change body className
+  useEffect(() => {
+    document.body.classList.toggle('no-cursor', enabled)
+
+    return () => {
+      document.body.classList.remove('no-cursor')
+    }
+  }, [enabled])
+
+  // [] -> Cuando se monta el componente
+  // [enabled] -> se ejecuta cuando cambi aenabled  y cuando se monta el componente
+  // undefined -> se eejecuta cada vez que se rendirza el component
 
   const activatePointer = () => {
     setEnabled(!enabled)
